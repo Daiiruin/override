@@ -1,5 +1,6 @@
+import { AnimatePresence } from 'motion/react'
 import { GameProvider, useGame } from './game/GameContext'
-import { LevelId } from './game/types'
+import { LevelId, type ScreenId } from './game/types'
 import { TimerBar } from './components/TimerBar'
 import { IntroScreen } from './screens/IntroScreen/IntroScreen'
 import { TerminalScreen } from './screens/TerminalScreen'
@@ -11,33 +12,43 @@ import { IdentityScreen } from './screens/IdentityScreen'
 import { FinaleScreen } from './screens/FinaleScreen'
 import { EndScreen } from './screens/EndScreen'
 
-function Game() {
-  const { state, isGameOver } = useGame()
-
-  if (isGameOver) return <EndScreen outcome="defeat" />
-
-  switch (state.currentScreen) {
+function renderScreen(currentScreen: ScreenId) {
+  switch (currentScreen) {
     case 'intro':
-      return <IntroScreen />
+      return <IntroScreen key="intro" />
     case LevelId.Terminal:
-      return <TerminalScreen />
+      return <TerminalScreen key={LevelId.Terminal} />
     case LevelId.Intercept:
-      return <InterceptScreen />
+      return <InterceptScreen key={LevelId.Intercept} />
     case LevelId.FileSystem:
-      return <FileSystemScreen />
+      return <FileSystemScreen key={LevelId.FileSystem} />
     case LevelId.Binary:
-      return <BinaryScreen />
+      return <BinaryScreen key={LevelId.Binary} />
     case LevelId.Firewall:
-      return <FirewallScreen />
+      return <FirewallScreen key={LevelId.Firewall} />
     case LevelId.Identity:
-      return <IdentityScreen />
+      return <IdentityScreen key={LevelId.Identity} />
     case LevelId.Finale:
-      return <FinaleScreen />
+      return <FinaleScreen key={LevelId.Finale} />
     case 'end':
-      return <EndScreen outcome="victory" />
+      return <EndScreen key="end" outcome="victory" />
     default:
       return null
   }
+}
+
+function Game() {
+  const { state, isGameOver } = useGame()
+
+  return (
+    <AnimatePresence mode="wait">
+      {isGameOver ? (
+        <EndScreen key="defeat" outcome="defeat" />
+      ) : (
+        renderScreen(state.currentScreen)
+      )}
+    </AnimatePresence>
+  )
 }
 
 export function App() {
