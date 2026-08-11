@@ -1,7 +1,8 @@
 import { useState, type FormEvent } from 'react'
-import { useGame } from '../game/GameContext'
-import { ScreenShell } from '../components/ScreenShell'
-import { GlitchText } from '../components/GlitchText'
+import { useGame } from '../../game/GameContext'
+import { ScreenShell } from '../../components/ScreenShell'
+import { GlitchText } from '../../components/GlitchText'
+import { IntroDifficulty } from './IntroDifficulty'
 
 export function IntroScreen() {
   const { start } = useGame()
@@ -17,6 +18,7 @@ export function IntroScreen() {
   return (
     <ScreenShell title="OVERRIDE">
       <GlitchText as="h2" text="NEXUS A PRIS LE CONTRÔLE DU RÉSEAU" />
+      <IntroDifficulty />
       <p>
         Tu es le dernier agent externe encore connecté. Le compte à rebours démarre
         dès que tu t&apos;identifies. Trouve les failles de NEXUS avant qu&apos;il ne

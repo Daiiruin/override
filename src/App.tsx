@@ -1,7 +1,7 @@
 import { GameProvider, useGame } from './game/GameContext'
 import { LevelId } from './game/types'
 import { TimerBar } from './components/TimerBar'
-import { IntroScreen } from './screens/IntroScreen'
+import { IntroScreen } from './screens/IntroScreen/IntroScreen'
 import { TerminalScreen } from './screens/TerminalScreen'
 import { InterceptScreen } from './screens/InterceptScreen'
 import { FileSystemScreen } from './screens/FileSystemScreen'
