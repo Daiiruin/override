@@ -1,0 +1,42 @@
+.glitch-text {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+}
+
+.glitch-text::before {
+  color: var(--color-neon-magenta);
+  animation: glitch-shift 2.2s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+  color: var(--color-neon-cyan);
+  animation: glitch-shift 1.7s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-shift {
+  0% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-2px, 1px);
+  }
+  40% {
+    transform: translate(2px, -1px);
+  }
+  60% {
+    transform: translate(-1px, 2px);
+  }
+  80% {
+    transform: translate(1px, -2px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}

@@ -1,3 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+:root {
+  --color-bg: #05060a;
+  --color-neon-cyan: #29fbff;
+  --color-neon-magenta: #ff2fd0;
+  --font-terminal: 'Share Tech Mono', monospace;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -5,7 +14,26 @@
 }
 
 body {
-  background: #05060a;
-  color: #eafcff;
+  background: var(--color-bg);
+  color: var(--color-neon-cyan);
+  font-family: var(--font-terminal);
   min-height: 100vh;
+}
+
+input,
+button {
+  font-family: inherit;
+  background: transparent;
+  border: 1px solid var(--color-neon-cyan);
+  color: var(--color-neon-cyan);
+  padding: 0.5rem 0.75rem;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--color-neon-cyan);
+  color: var(--color-bg);
 }

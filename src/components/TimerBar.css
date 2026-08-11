@@ -1,0 +1,29 @@
+.timer-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  color: var(--color-neon-cyan);
+  background: rgba(5, 6, 10, 0.85);
+  letter-spacing: 0.1em;
+  z-index: 10;
+}
+
+.timer-bar--critical {
+  color: var(--color-neon-magenta);
+  animation: timer-pulse 1s infinite;
+}
+
+@keyframes timer-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
