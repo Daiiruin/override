@@ -4,6 +4,7 @@ import { TimerBar } from './components/TimerBar'
 import { IntroScreen } from './screens/IntroScreen'
 import { TerminalScreen } from './screens/TerminalScreen'
 import { InterceptScreen } from './screens/InterceptScreen'
+import { FileSystemScreen } from './screens/FileSystemScreen'
 
 function Game() {
   const { state } = useGame()
@@ -15,6 +16,8 @@ function Game() {
       return <TerminalScreen />
     case LevelId.Intercept:
       return <InterceptScreen />
+    case LevelId.FileSystem:
+      return <FileSystemScreen />
     default:
       return null
   }
