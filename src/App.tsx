@@ -9,9 +9,12 @@ import { BinaryScreen } from './screens/BinaryScreen'
 import { FirewallScreen } from './screens/FirewallScreen'
 import { IdentityScreen } from './screens/IdentityScreen'
 import { FinaleScreen } from './screens/FinaleScreen'
+import { EndScreen } from './screens/EndScreen'
 
 function Game() {
-  const { state } = useGame()
+  const { state, isGameOver } = useGame()
+
+  if (isGameOver) return <EndScreen outcome="defeat" />
 
   switch (state.currentScreen) {
     case 'intro':
@@ -30,6 +33,8 @@ function Game() {
       return <IdentityScreen />
     case LevelId.Finale:
       return <FinaleScreen />
+    case 'end':
+      return <EndScreen outcome="victory" />
     default:
       return null
   }

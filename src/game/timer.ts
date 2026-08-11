@@ -1,4 +1,4 @@
-export const GAME_DURATION_MS = 15 * 60 * 1000
+export const GAME_DURATION_MS = 10 * 60 * 1000
 
 export function computeDeadline(nowMs: number): number {
   return nowMs + GAME_DURATION_MS
