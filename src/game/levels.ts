@@ -42,7 +42,7 @@ export const LEVELS: LevelDefinition[] = [
     next: LevelId.Intercept,
     title: 'Connexion terminal',
     narrative: () =>
-      "NEXUS a laissé une trace dans le code source de cette page. Inspecte le document (Ctrl+U) pour trouver le code d'accès.",
+      'NEXUS a dissimulé le code d\'accès quelque part sur cette page.',
     validate: (input) => normalize(input) === normalize('GHOST99'),
   },
   {

@@ -1,0 +1,4 @@
+.terminal-hidden-clue {
+  color: var(--color-bg);
+  user-select: text;
+}
