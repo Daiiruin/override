@@ -1,0 +1,22 @@
+.cipher-decoder {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem 0.15rem;
+  font-size: 0.85rem;
+}
+
+.cipher-decoder__pair {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 1.4rem;
+}
+
+.cipher-decoder__received {
+  color: var(--color-neon-magenta);
+}
+
+.cipher-decoder__real {
+  color: var(--color-neon-cyan);
+}

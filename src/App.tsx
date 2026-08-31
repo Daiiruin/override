@@ -1,4 +1,3 @@
-import { AnimatePresence } from 'motion/react'
 import { GameProvider, useGame } from './game/GameContext'
 import { LevelId, type ScreenId } from './game/types'
 import { TimerBar } from './components/TimerBar'
@@ -6,32 +5,35 @@ import { IntroScreen } from './screens/IntroScreen/IntroScreen'
 import { TerminalScreen } from './screens/TerminalScreen'
 import { InterceptScreen } from './screens/InterceptScreen'
 import { FileSystemScreen } from './screens/FileSystemScreen'
-import { BinaryScreen } from './screens/BinaryScreen'
+import { SystemLogScreen } from './screens/SystemLogScreen'
 import { FirewallScreen } from './screens/FirewallScreen'
-import { IdentityScreen } from './screens/IdentityScreen'
-import { FinaleScreen } from './screens/FinaleScreen'
+import { KeypadScreen } from './screens/KeypadScreen'
+import { DefenseScreen } from './screens/DefenseScreen'
+import { BotSwarmScreen } from './screens/BotSwarmScreen'
 import { EndScreen } from './screens/EndScreen'
 
 function renderScreen(currentScreen: ScreenId) {
   switch (currentScreen) {
     case 'intro':
-      return <IntroScreen key="intro" />
+      return <IntroScreen />
     case LevelId.Terminal:
-      return <TerminalScreen key={LevelId.Terminal} />
+      return <TerminalScreen />
     case LevelId.Intercept:
-      return <InterceptScreen key={LevelId.Intercept} />
+      return <InterceptScreen />
     case LevelId.FileSystem:
-      return <FileSystemScreen key={LevelId.FileSystem} />
-    case LevelId.Binary:
-      return <BinaryScreen key={LevelId.Binary} />
+      return <FileSystemScreen />
+    case LevelId.Logs:
+      return <SystemLogScreen />
     case LevelId.Firewall:
-      return <FirewallScreen key={LevelId.Firewall} />
-    case LevelId.Identity:
-      return <IdentityScreen key={LevelId.Identity} />
+      return <FirewallScreen />
+    case LevelId.Keypad:
+      return <KeypadScreen />
+    case LevelId.Defense:
+      return <DefenseScreen />
     case LevelId.Finale:
-      return <FinaleScreen key={LevelId.Finale} />
+      return <BotSwarmScreen />
     case 'end':
-      return <EndScreen key="end" outcome="victory" />
+      return <EndScreen outcome="victory" />
     default:
       return null
   }
@@ -40,15 +42,9 @@ function renderScreen(currentScreen: ScreenId) {
 function Game() {
   const { state, isGameOver } = useGame()
 
-  return (
-    <AnimatePresence mode="wait">
-      {isGameOver ? (
-        <EndScreen key="defeat" outcome="defeat" />
-      ) : (
-        renderScreen(state.currentScreen)
-      )}
-    </AnimatePresence>
-  )
+  if (isGameOver) return <EndScreen outcome="defeat" />
+
+  return renderScreen(state.currentScreen)
 }
 
 export function App() {

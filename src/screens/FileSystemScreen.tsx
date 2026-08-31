@@ -3,14 +3,7 @@ import { getLevel } from '../game/levels'
 import { LevelId } from '../game/types'
 import { ScreenShell } from '../components/ScreenShell'
 import { LevelAnswerForm } from '../components/LevelAnswerForm'
-import './FileSystemScreen.css'
-
-interface FileNode {
-  name: string
-  type: 'folder' | 'file'
-  content?: string
-  children?: FileNode[]
-}
+import { FileTree, type FileNode } from '../components/FileTree'
 
 const ROOT: FileNode = {
   name: '/nexus_core',
@@ -42,27 +35,6 @@ const ROOT: FileNode = {
   ],
 }
 
-function FolderNode({ node }: { node: FileNode }) {
-  if (node.type === 'file') {
-    return (
-      <details className="file-node">
-        <summary>{node.name}</summary>
-        <p>{node.content}</p>
-      </details>
-    )
-  }
-  return (
-    <details className="folder-node">
-      <summary>{node.name}/</summary>
-      <div className="folder-node__children">
-        {node.children?.map((child) => (
-          <FolderNode key={child.name} node={child} />
-        ))}
-      </div>
-    </details>
-  )
-}
-
 export function FileSystemScreen() {
   const { state } = useGame()
   const level = getLevel(LevelId.FileSystem)
@@ -70,7 +42,7 @@ export function FileSystemScreen() {
   return (
     <ScreenShell title={level.title}>
       <p>{level.narrative(state)}</p>
-      <FolderNode node={ROOT} />
+      <FileTree node={ROOT} />
       <LevelAnswerForm placeholder="Clé de sauvegarde" />
     </ScreenShell>
   )

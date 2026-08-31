@@ -7,6 +7,7 @@ const sample: SaveData = {
   collectedCodes: { terminal: 'GHOST99' },
   deadlineTimestamp: 123456,
   victory: false,
+  forcedGameOver: false,
 }
 
 describe('storage', () => {

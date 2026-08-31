@@ -7,18 +7,3 @@ export function caesarShift(text: string, shift: number): string {
     )
   })
 }
-
-export function textToBinary(text: string): string {
-  return text
-    .split('')
-    .map((char) => char.charCodeAt(0).toString(2).padStart(8, '0'))
-    .join(' ')
-}
-
-export function binaryToText(binary: string): string {
-  return binary
-    .trim()
-    .split(/\s+/)
-    .map((byte) => String.fromCharCode(parseInt(byte, 2)))
-    .join('')
-}

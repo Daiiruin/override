@@ -18,6 +18,11 @@
   animation: timer-pulse 1s infinite;
 }
 
+.timer-bar--penalty {
+  color: var(--color-neon-magenta);
+  background: rgba(255, 47, 208, 0.25);
+}
+
 @keyframes timer-pulse {
   0%,
   100% {

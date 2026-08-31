@@ -8,7 +8,7 @@ import './FirewallScreen.css'
 const NODES = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 export function FirewallScreen() {
-  const { state, solveLevel } = useGame()
+  const { state, solveLevel, penalize } = useGame()
   const level = getLevel(LevelId.Firewall)
   const [sequence, setSequence] = useState<number[]>([])
   const [error, setError] = useState(false)
@@ -21,6 +21,7 @@ export function FirewallScreen() {
     if (!isValidSoFar) {
       setSequence([])
       setError(true)
+      penalize()
       return
     }
 

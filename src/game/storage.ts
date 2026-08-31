@@ -4,6 +4,7 @@ export interface SaveData {
   collectedCodes: Record<string, string>
   deadlineTimestamp: number
   victory: boolean
+  forcedGameOver: boolean
 }
 
 const STORAGE_KEY = 'override:save:v1'

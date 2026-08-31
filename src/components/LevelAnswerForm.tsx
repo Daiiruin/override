@@ -6,7 +6,7 @@ interface LevelAnswerFormProps {
 }
 
 export function LevelAnswerForm({ placeholder = 'Entrer le code' }: LevelAnswerFormProps) {
-  const { solveLevel } = useGame()
+  const { solveLevel, penalize } = useGame()
   const [input, setInput] = useState('')
   const [error, setError] = useState(false)
 
@@ -14,7 +14,11 @@ export function LevelAnswerForm({ placeholder = 'Entrer le code' }: LevelAnswerF
     event.preventDefault()
     const solved = solveLevel(input)
     setError(!solved)
-    if (solved) setInput('')
+    if (solved) {
+      setInput('')
+    } else {
+      penalize()
+    }
   }
 
   return (

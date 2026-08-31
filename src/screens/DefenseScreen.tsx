@@ -1,0 +1,114 @@
+import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { useGame } from '../game/GameContext'
+import {
+  getLevel,
+  DEFENSE_WORDS,
+  DEFENSE_WORDS_TO_CLEAR,
+  DEFENSE_CLEARED_SIGNAL,
+} from '../game/levels'
+import { LevelId } from '../game/types'
+import { ScreenShell } from '../components/ScreenShell'
+import { useCountdown } from '../hooks/useCountdown'
+import './DefenseScreen.css'
+
+const READY_SECONDS = 5
+const TICK_MS = 60
+const FALL_DURATION_MS = 5000
+const FALL_STEP = 100 / (FALL_DURATION_MS / TICK_MS)
+const SPAWN_EVERY_TICKS = Math.round(1400 / TICK_MS)
+
+interface FallingWord {
+  id: number
+  text: string
+  y: number
+  x: number
+}
+
+let nextWordId = 0
+
+export function DefenseScreen() {
+  const { state, solveLevel, forceDefeat, penalize } = useGame()
+  const level = getLevel(LevelId.Defense)
+  const countdown = useCountdown(READY_SECONDS)
+  const [words, setWords] = useState<FallingWord[]>([])
+  const [cleared, setCleared] = useState(0)
+  const [input, setInput] = useState('')
+  const tickCount = useRef(0)
+
+  useEffect(() => {
+    if (countdown > 0) return
+    const interval = window.setInterval(() => {
+      tickCount.current += 1
+      setWords((current) => {
+        const moved = current.map((word) => ({ ...word, y: word.y + FALL_STEP }))
+        if (tickCount.current % SPAWN_EVERY_TICKS === 0) {
+          const text = DEFENSE_WORDS[Math.floor(Math.random() * DEFENSE_WORDS.length)]
+          moved.push({ id: nextWordId++, text, y: 0, x: Math.random() * 80 })
+        }
+        return moved
+      })
+    }, TICK_MS)
+    return () => window.clearInterval(interval)
+  }, [countdown])
+
+  useEffect(() => {
+    if (words.some((word) => word.y >= 100)) {
+      forceDefeat()
+    }
+  }, [words, forceDefeat])
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    const typed = input.trim().toUpperCase()
+    setInput('')
+    if (!typed) return
+
+    const match = words.find((word) => word.text === typed)
+    if (!match) {
+      penalize()
+      return
+    }
+
+    setWords((current) => current.filter((word) => word.id !== match.id))
+    const total = cleared + 1
+    setCleared(total)
+    if (total >= DEFENSE_WORDS_TO_CLEAR) {
+      solveLevel(DEFENSE_CLEARED_SIGNAL)
+    }
+  }
+
+  return (
+    <ScreenShell title={level.title}>
+      <p>{level.narrative(state)}</p>
+      {countdown > 0 ? (
+        <p className="level-countdown">{countdown}</p>
+      ) : (
+        <>
+          <p className="defense-progress">
+            {cleared} / {DEFENSE_WORDS_TO_CLEAR} commandes neutralisées
+          </p>
+          <div className="defense-field">
+            {words.map((word) => (
+              <span
+                key={word.id}
+                className="defense-field__word"
+                style={{ top: `${word.y}%`, left: `${word.x}%` }}
+              >
+                {word.text}
+              </span>
+            ))}
+          </div>
+          <form onSubmit={handleSubmit}>
+            <input
+              value={input}
+              placeholder="Tape la commande affichée"
+              onChange={(event) => setInput(event.target.value)}
+              autoFocus
+            />
+            <button type="submit">Valider</button>
+          </form>
+        </>
+      )}
+    </ScreenShell>
+  )
+}

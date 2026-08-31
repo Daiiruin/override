@@ -1,0 +1,19 @@
+.defense-field {
+  position: relative;
+  width: 100%;
+  height: 14rem;
+  border: 1px dashed var(--color-neon-cyan);
+  overflow: hidden;
+}
+
+.defense-field__word {
+  position: absolute;
+  color: var(--color-neon-magenta);
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+.defense-progress {
+  font-size: 0.85rem;
+  opacity: 0.85;
+}

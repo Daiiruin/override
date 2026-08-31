@@ -3,8 +3,11 @@ import {
   LEVELS,
   getLevel,
   INTERCEPT_ANSWER,
-  BINARY_ANSWER,
+  LOG_ANSWER,
   FIREWALL_ANSWER,
+  KEYPAD_CLEARED_SIGNAL,
+  BOTS_CLEARED_SIGNAL,
+  DEFENSE_CLEARED_SIGNAL,
 } from './levels'
 import { LevelId, type GameState } from './types'
 
@@ -14,17 +17,19 @@ const baseState: GameState = {
   collectedCodes: {},
   deadlineTimestamp: null,
   victory: false,
+  forcedGameOver: false,
 }
 
 describe('LEVELS', () => {
-  it('defines the 7 levels in the expected order', () => {
+  it('defines the 8 levels in the expected order', () => {
     expect(LEVELS.map((level) => level.id)).toEqual([
       LevelId.Terminal,
       LevelId.Intercept,
       LevelId.FileSystem,
-      LevelId.Binary,
+      LevelId.Logs,
       LevelId.Firewall,
-      LevelId.Identity,
+      LevelId.Keypad,
+      LevelId.Defense,
       LevelId.Finale,
     ])
   })
@@ -39,30 +44,26 @@ describe('LEVELS', () => {
     ).toBe(true)
   })
 
-  it('validates the binary answer', () => {
-    expect(getLevel(LevelId.Binary).validate(BINARY_ANSWER, baseState)).toBe(true)
+  it('validates the system log answer', () => {
+    expect(getLevel(LevelId.Logs).validate(LOG_ANSWER, baseState)).toBe(true)
   })
 
   it('validates the firewall sequence', () => {
     expect(getLevel(LevelId.Firewall).validate(FIREWALL_ANSWER, baseState)).toBe(true)
   })
 
-  it('validates the identity level against the player name in state', () => {
-    expect(getLevel(LevelId.Identity).validate('ada', baseState)).toBe(true)
-    expect(getLevel(LevelId.Identity).validate('bob', baseState)).toBe(false)
+  it('validates the keypad level only on the cleared signal', () => {
+    expect(getLevel(LevelId.Keypad).validate(KEYPAD_CLEARED_SIGNAL, baseState)).toBe(true)
+    expect(getLevel(LevelId.Keypad).validate('wrong', baseState)).toBe(false)
   })
 
-  it('validates the finale answer as the collected codes joined with dashes', () => {
-    const state: GameState = {
-      ...baseState,
-      collectedCodes: {
-        [LevelId.Terminal]: 'GHOST99',
-        [LevelId.Binary]: 'OVERRIDE',
-        [LevelId.Intercept]: 'NIGHTFALL',
-      },
-    }
-    expect(
-      getLevel(LevelId.Finale).validate('GHOST99-OVERRIDE-NIGHTFALL', state),
-    ).toBe(true)
+  it('validates the defense level only on the cleared signal', () => {
+    expect(getLevel(LevelId.Defense).validate(DEFENSE_CLEARED_SIGNAL, baseState)).toBe(true)
+    expect(getLevel(LevelId.Defense).validate('DELETE', baseState)).toBe(false)
+  })
+
+  it('validates the finale level only on the cleared signal', () => {
+    expect(getLevel(LevelId.Finale).validate(BOTS_CLEARED_SIGNAL, baseState)).toBe(true)
+    expect(getLevel(LevelId.Finale).validate('wrong', baseState)).toBe(false)
   })
 })

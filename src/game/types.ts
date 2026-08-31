@@ -2,9 +2,10 @@ export enum LevelId {
   Terminal = 'terminal',
   Intercept = 'intercept',
   FileSystem = 'filesystem',
-  Binary = 'binary',
+  Logs = 'logs',
   Firewall = 'firewall',
-  Identity = 'identity',
+  Keypad = 'keypad',
+  Defense = 'defense',
   Finale = 'finale',
 }
 
@@ -16,6 +17,7 @@ export interface GameState {
   collectedCodes: Partial<Record<LevelId, string>>
   deadlineTimestamp: number | null
   victory: boolean
+  forcedGameOver: boolean
 }
 
 export interface LevelDefinition {
