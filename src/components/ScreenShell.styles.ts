@@ -4,6 +4,8 @@ export const Page = styled.div(({ theme }) => ({
   minHeight: '100vh',
   display: 'flex',
   justifyContent: 'center',
+  // align-items defaults to 'stretch', which is what lets Panel below fill this
+  // height instead of shrinking to its content — don't override it here.
   padding: `calc(${theme.space['12']} + 2rem) ${theme.space['4']} ${theme.space['8']}`,
 }))
 
@@ -11,7 +13,8 @@ export const Panel = styled.div(({ theme }) => ({
   position: 'relative',
   width: '100%',
   maxWidth: theme.layout.containerWidth,
-  height: 'fit-content',
+  display: 'flex',
+  flexDirection: 'column',
   background: theme.colors.surface,
   border: `1px solid ${theme.colors.border}`,
   borderRadius: theme.radii.sm,
@@ -77,10 +80,12 @@ export const LiveDot = styled.span`
 `
 
 export const Body = styled.div(({ theme }) => ({
+  flex: 1,
   padding: `${theme.space['8']} ${theme.space['6']}`,
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
+  justifyContent: 'center',
   gap: theme.space['4'],
 }))
 
