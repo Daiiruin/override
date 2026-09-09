@@ -1,3 +1,4 @@
+import { ThemeProvider } from 'styled-components'
 import { GameProvider, useGame } from './game/GameContext'
 import { LevelId, type ScreenId } from './game/types'
 import { TimerBar } from './components/TimerBar'
@@ -11,6 +12,10 @@ import { KeypadScreen } from './screens/KeypadScreen'
 import { DefenseScreen } from './screens/DefenseScreen'
 import { BotSwarmScreen } from './screens/BotSwarmScreen'
 import { EndScreen } from './screens/EndScreen'
+import { tokens, GlobalStyle } from './design-system/theme'
+import { CRTOverlay } from './design-system/atoms/CRTOverlay'
+import { GridOverlay } from './design-system/atoms/GridOverlay'
+import { CustomCursor } from './design-system/atoms/CustomCursor'
 
 function renderScreen(currentScreen: ScreenId) {
   switch (currentScreen) {
@@ -49,9 +54,15 @@ function Game() {
 
 export function App() {
   return (
-    <GameProvider>
-      <TimerBar />
-      <Game />
-    </GameProvider>
+    <ThemeProvider theme={tokens}>
+      <GlobalStyle />
+      <GridOverlay />
+      <CRTOverlay />
+      <CustomCursor />
+      <GameProvider>
+        <TimerBar />
+        <Game />
+      </GameProvider>
+    </ThemeProvider>
   )
 }
