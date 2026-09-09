@@ -21,9 +21,9 @@ export const Pair = styled.div({
 })
 
 export const Received = styled.span(({ theme }) => ({
-  color: theme.colors.nexus,
+  color: theme.colors.accent,
 }))
 
 export const Real = styled.span(({ theme }) => ({
-  color: theme.colors.accent,
+  color: theme.colors.nexus,
 }))

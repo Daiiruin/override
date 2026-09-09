@@ -4,10 +4,9 @@ import { useGame } from '../game/GameContext'
 import { getLevel, BOTS_TO_CLEAR, BOTS_CLEARED_SIGNAL } from '../game/levels'
 import { LevelId } from '../game/types'
 import { ScreenShell, Divider } from '../components/ScreenShell'
-import { useCountdown } from '../hooks/useCountdown'
-import { Field, PcMarker, BotButton, Progress, Countdown } from './BotSwarmScreen.styles'
+import { Button } from '../design-system/atoms/Button'
+import { Field, PcMarker, BotButton, Progress } from './BotSwarmScreen.styles'
 
-const READY_SECONDS = 5
 const TICK_MS = 60
 const FALL_DURATION_MS = 4000
 const FALL_STEP = 100 / (FALL_DURATION_MS / TICK_MS)
@@ -26,13 +25,13 @@ let nextBotId = 0
 export function BotSwarmScreen() {
   const { state, solveLevel, forceDefeat } = useGame()
   const level = getLevel(LevelId.Finale)
-  const countdown = useCountdown(READY_SECONDS)
+  const [ready, setReady] = useState(false)
   const [bots, setBots] = useState<EnemyBot[]>([])
   const [cleared, setCleared] = useState(0)
   const tickCount = useRef(0)
 
   useEffect(() => {
-    if (countdown > 0) return
+    if (!ready) return
     const interval = window.setInterval(() => {
       tickCount.current += 1
       setBots((current) => {
@@ -46,7 +45,7 @@ export function BotSwarmScreen() {
       })
     }, TICK_MS)
     return () => window.clearInterval(interval)
-  }, [countdown])
+  }, [ready])
 
   useEffect(() => {
     if (bots.some((bot) => !bot.exploding && bot.y >= 100)) {
@@ -74,8 +73,8 @@ export function BotSwarmScreen() {
     <ScreenShell title={level.title}>
       <p>{level.narrative(state)}</p>
       <Divider />
-      {countdown > 0 ? (
-        <Countdown>{countdown}</Countdown>
+      {!ready ? (
+        <Button onClick={() => setReady(true)}>Prêt</Button>
       ) : (
         <>
           <Progress>

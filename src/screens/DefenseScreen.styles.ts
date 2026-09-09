@@ -22,16 +22,6 @@ export const Progress = styled.p(({ theme }) => ({
   color: theme.colors.textMuted,
 }))
 
-// && beats ScreenShell's Content `p { color: textMuted }` descendant rule (0,1,1),
-// which otherwise outranks this component's own class (0,1,0).
-export const Countdown = styled.p(({ theme }) => ({
-  '&&': {
-    color: theme.colors.nexus,
-  },
-  fontSize: theme.font.size['3xl'],
-  fontWeight: theme.font.weight.bold,
-}))
-
 export const Form = styled.form(({ theme }) => ({
   width: '100%',
   display: 'flex',
