@@ -2,6 +2,8 @@ import { useGame } from '../game/GameContext'
 import { formatDuration } from '../game/timer'
 import { ScreenShell } from '../components/ScreenShell'
 import { GlitchText } from '../components/GlitchText'
+import { Button } from '../design-system/atoms/Button'
+import { Narrative } from './EndScreen.styles'
 
 interface EndScreenProps {
   outcome: 'victory' | 'defeat'
@@ -14,11 +16,11 @@ export function EndScreen({ outcome }: EndScreenProps) {
     return (
       <ScreenShell title="SYSTÈME REPRIS">
         <GlitchText as="h2" text={`BRAVO, ${state.playerName.toUpperCase()}`} />
-        <p>
+        <Narrative>
           NEXUS est neutralisé. Il te restait {formatDuration(msLeft)} avant la prise
           de contrôle totale.
-        </p>
-        <button onClick={restart}>Rejouer</button>
+        </Narrative>
+        <Button onClick={restart}>Rejouer</Button>
       </ScreenShell>
     )
   }
@@ -26,8 +28,10 @@ export function EndScreen({ outcome }: EndScreenProps) {
   return (
     <ScreenShell title="ÉCHEC DE LA MISSION">
       <GlitchText as="h2" text="NEXUS A PRIS LE CONTRÔLE" />
-      <p>{state.playerName}, le temps s&apos;est écoulé avant que tu ne désactives le noyau.</p>
-      <button onClick={restart}>Réessayer</button>
+      <Narrative>
+        {state.playerName}, le temps s&apos;est écoulé avant que tu ne désactives le noyau.
+      </Narrative>
+      <Button onClick={restart}>Réessayer</Button>
     </ScreenShell>
   )
 }

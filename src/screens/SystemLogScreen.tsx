@@ -1,9 +1,9 @@
 import { useGame } from '../game/GameContext'
 import { getLevel, LOG_ANSWER } from '../game/levels'
 import { LevelId } from '../game/types'
-import { ScreenShell } from '../components/ScreenShell'
+import { ScreenShell, Divider } from '../components/ScreenShell'
 import { LevelAnswerForm } from '../components/LevelAnswerForm'
-import './SystemLogScreen.css'
+import { LogBox, LogLine } from './SystemLogScreen.styles'
 
 const LOG_LINES = [
   '[03:14:02] nexus-core: heartbeat OK',
@@ -35,13 +35,12 @@ export function SystemLogScreen() {
   return (
     <ScreenShell title={level.title}>
       <p>{level.narrative(state)}</p>
-      <div className="system-log">
+      <LogBox>
         {LOG_LINES.map((line) => (
-          <p key={line} className="system-log__line">
-            {line}
-          </p>
+          <LogLine key={line}>{line}</LogLine>
         ))}
-      </div>
+      </LogBox>
+      <Divider />
       <LevelAnswerForm placeholder="Identifiant d'accès" />
     </ScreenShell>
   )
