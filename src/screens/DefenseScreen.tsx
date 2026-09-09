@@ -10,10 +10,8 @@ import { LevelId } from '../game/types'
 import { ScreenShell, Divider } from '../components/ScreenShell'
 import { Button } from '../design-system/atoms/Button'
 import { Input } from '../design-system/atoms/Input'
-import { useCountdown } from '../hooks/useCountdown'
-import { Field, FallingWord, Progress, Countdown, Form } from './DefenseScreen.styles'
+import { Field, FallingWord, Progress, Form } from './DefenseScreen.styles'
 
-const READY_SECONDS = 5
 const TICK_MS = 60
 const FALL_DURATION_MS = 5000
 const FALL_STEP = 100 / (FALL_DURATION_MS / TICK_MS)
@@ -31,14 +29,14 @@ let nextWordId = 0
 export function DefenseScreen() {
   const { state, solveLevel, forceDefeat, penalize } = useGame()
   const level = getLevel(LevelId.Defense)
-  const countdown = useCountdown(READY_SECONDS)
+  const [ready, setReady] = useState(false)
   const [words, setWords] = useState<FallingWordState[]>([])
   const [cleared, setCleared] = useState(0)
   const [input, setInput] = useState('')
   const tickCount = useRef(0)
 
   useEffect(() => {
-    if (countdown > 0) return
+    if (!ready) return
     const interval = window.setInterval(() => {
       tickCount.current += 1
       setWords((current) => {
@@ -51,7 +49,7 @@ export function DefenseScreen() {
       })
     }, TICK_MS)
     return () => window.clearInterval(interval)
-  }, [countdown])
+  }, [ready])
 
   useEffect(() => {
     if (words.some((word) => word.y >= 100)) {
@@ -83,8 +81,8 @@ export function DefenseScreen() {
     <ScreenShell title={level.title}>
       <p>{level.narrative(state)}</p>
       <Divider />
-      {countdown > 0 ? (
-        <Countdown>{countdown}</Countdown>
+      {!ready ? (
+        <Button onClick={() => setReady(true)}>Prêt</Button>
       ) : (
         <>
           <Progress>

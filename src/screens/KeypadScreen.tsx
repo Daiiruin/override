@@ -9,6 +9,7 @@ import {
 } from '../game/levels'
 import { LevelId } from '../game/types'
 import { ScreenShell, Divider } from '../components/ScreenShell'
+import { Button } from '../design-system/atoms/Button'
 import { Status, Grid, Node } from './KeypadScreen.styles'
 
 const NODE_ICONS = [Lock, Key, Shield, Fingerprint]
@@ -26,6 +27,7 @@ export function KeypadScreen() {
   const { state, solveLevel, penalize } = useGame()
   const level = getLevel(LevelId.Keypad)
   const [sequence] = useState<number[]>(() => generateSequence())
+  const [ready, setReady] = useState(false)
   const [replayCount, setReplayCount] = useState(0)
   const [phase, setPhase] = useState<'playback' | 'input'>('playback')
   const [activeNode, setActiveNode] = useState<number | null>(null)
@@ -33,6 +35,7 @@ export function KeypadScreen() {
   const [hasErrored, setHasErrored] = useState(false)
 
   useEffect(() => {
+    if (!ready) return
     let cancelled = false
     const timeouts: number[] = []
 
@@ -60,7 +63,7 @@ export function KeypadScreen() {
       cancelled = true
       timeouts.forEach((id) => window.clearTimeout(id))
     }
-  }, [sequence, replayCount])
+  }, [ready, sequence, replayCount])
 
   function handleNodeClick(node: number) {
     if (phase !== 'input') return
@@ -86,28 +89,34 @@ export function KeypadScreen() {
     <ScreenShell title={level.title}>
       <p>{level.narrative(state)}</p>
       <Divider />
-      {phase === 'playback' ? (
-        <Status>Observe la séquence...</Status>
+      {!ready ? (
+        <Button onClick={() => setReady(true)}>Prêt</Button>
       ) : (
-        <Status>
-          Reproduis la séquence ({playerProgress}/{sequence.length})
-        </Status>
+        <>
+          {phase === 'playback' ? (
+            <Status>Observe la séquence...</Status>
+          ) : (
+            <Status>
+              Reproduis la séquence ({playerProgress}/{sequence.length})
+            </Status>
+          )}
+          {hasErrored && <Status>Erreur détectée, séquence relancée.</Status>}
+          <Grid>
+            {NODE_ICONS.map((Icon, node) => (
+              <Node
+                key={node}
+                type="button"
+                $active={activeNode === node}
+                onClick={() => handleNodeClick(node)}
+                disabled={phase === 'playback'}
+                aria-label={`Symbole ${node + 1}`}
+              >
+                <Icon size={24} />
+              </Node>
+            ))}
+          </Grid>
+        </>
       )}
-      {hasErrored && <Status>Erreur détectée, séquence relancée.</Status>}
-      <Grid>
-        {NODE_ICONS.map((Icon, node) => (
-          <Node
-            key={node}
-            type="button"
-            $active={activeNode === node}
-            onClick={() => handleNodeClick(node)}
-            disabled={phase === 'playback'}
-            aria-label={`Symbole ${node + 1}`}
-          >
-            <Icon size={24} />
-          </Node>
-        ))}
-      </Grid>
     </ScreenShell>
   )
 }
