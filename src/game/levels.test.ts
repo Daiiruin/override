@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
   LEVELS,
+  LEVEL_ORDER,
   getLevel,
   INTERCEPT_ANSWER,
   LOG_ANSWER,
@@ -36,6 +37,19 @@ describe('LEVELS', () => {
 
   it('chains the last level to the "end" screen', () => {
     expect(LEVELS[LEVELS.length - 1].next).toBe('end')
+  })
+
+  it('exposes LEVEL_ORDER with all 8 level ids in play order', () => {
+    expect(LEVEL_ORDER).toEqual([
+      LevelId.Terminal,
+      LevelId.Intercept,
+      LevelId.FileSystem,
+      LevelId.Logs,
+      LevelId.Firewall,
+      LevelId.Keypad,
+      LevelId.Defense,
+      LevelId.Finale,
+    ])
   })
 
   it('validates the intercept answer case-insensitively', () => {
