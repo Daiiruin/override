@@ -14,6 +14,12 @@ export const LogBox = styled.div(({ theme }) => ({
 }))
 
 export const LogLine = styled.p(({ theme }) => ({
+  // && beats ScreenShell's Content `p { text-align: center }` descendant rule
+  // (0,1,1), which otherwise outranks this component's own class (0,1,0) and
+  // would center these log lines instead of keeping them left-aligned.
+  '&&': {
+    textAlign: 'left',
+  },
   whiteSpace: 'pre-wrap',
   wordBreak: 'break-word',
   color: theme.colors.textMuted,

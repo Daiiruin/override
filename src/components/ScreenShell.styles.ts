@@ -114,8 +114,8 @@ export const Content = styled.div(({ theme }) => ({
   gap: theme.space['4'],
 
   p: {
-    textAlign: 'left',
-    alignSelf: 'stretch',
+    textAlign: 'center',
+    maxWidth: '42rem',
     color: theme.colors.textMuted,
     lineHeight: theme.font.lineHeight.relaxed,
   },
