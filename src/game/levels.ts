@@ -103,6 +103,8 @@ export const LEVELS: LevelDefinition[] = [
   },
 ]
 
+export const LEVEL_ORDER: LevelId[] = LEVELS.map((level) => level.id)
+
 export function getLevel(id: LevelId): LevelDefinition {
   const level = LEVELS.find((entry) => entry.id === id)
   if (!level) throw new Error(`Unknown level id: ${id}`)
