@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { useGame } from '../game/GameContext'
 import { getLevel, FIREWALL_ANSWER } from '../game/levels'
 import { LevelId } from '../game/types'
-import { ScreenShell } from '../components/ScreenShell'
-import './FirewallScreen.css'
+import { ScreenShell, Divider } from '../components/ScreenShell'
+import { Grid, Node, ErrorBar } from './FirewallScreen.styles'
 
 const NODES = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
@@ -37,18 +37,15 @@ export function FirewallScreen() {
   return (
     <ScreenShell title={level.title}>
       <p>{level.narrative(state)}</p>
-      <div className="firewall-grid">
+      <Divider />
+      <Grid>
         {NODES.map((node) => (
-          <button
-            key={node}
-            className={`firewall-node${sequence.includes(node) ? ' firewall-node--active' : ''}`}
-            onClick={() => handleClick(node)}
-          >
+          <Node key={node} $active={sequence.includes(node)} onClick={() => handleClick(node)}>
             {node}
-          </button>
+          </Node>
         ))}
-      </div>
-      {error && <p role="alert">Séquence incorrecte, recommence.</p>}
+      </Grid>
+      {error && <ErrorBar role="alert">Séquence incorrecte, recommence.</ErrorBar>}
     </ScreenShell>
   )
 }

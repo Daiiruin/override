@@ -14,12 +14,16 @@ export const Prompt = styled.span(({ theme }) => ({
   fontWeight: theme.font.weight.bold,
 }))
 
+// && beats ScreenShell's Content `p { color: ...; text-align: center }` descendant
+// rule (0,1,1), which otherwise outranks this component's own class (0,1,0).
 export const ErrorBar = styled.p(({ theme }) => ({
+  '&&': {
+    color: theme.colors.error,
+    textAlign: 'left',
+  },
   width: '100%',
   padding: `${theme.space['2']} ${theme.space['3']}`,
   background: theme.colors.errorSubtle,
-  color: theme.colors.error,
   borderLeft: `2px solid ${theme.colors.error}`,
   fontSize: theme.font.size.sm,
-  textAlign: 'left',
 }))

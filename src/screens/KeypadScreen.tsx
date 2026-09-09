@@ -8,8 +8,8 @@ import {
   KEYPAD_CLEARED_SIGNAL,
 } from '../game/levels'
 import { LevelId } from '../game/types'
-import { ScreenShell } from '../components/ScreenShell'
-import './KeypadScreen.css'
+import { ScreenShell, Divider } from '../components/ScreenShell'
+import { Status, Grid, Node } from './KeypadScreen.styles'
 
 const NODE_ICONS = [Lock, Key, Shield, Fingerprint]
 
@@ -85,28 +85,29 @@ export function KeypadScreen() {
   return (
     <ScreenShell title={level.title}>
       <p>{level.narrative(state)}</p>
+      <Divider />
       {phase === 'playback' ? (
-        <p className="keypad-status">Observe la séquence...</p>
+        <Status>Observe la séquence...</Status>
       ) : (
-        <p className="keypad-status">
+        <Status>
           Reproduis la séquence ({playerProgress}/{sequence.length})
-        </p>
+        </Status>
       )}
-      {hasErrored && <p className="keypad-status">Erreur détectée, séquence relancée.</p>}
-      <div className="keypad-grid">
+      {hasErrored && <Status>Erreur détectée, séquence relancée.</Status>}
+      <Grid>
         {NODE_ICONS.map((Icon, node) => (
-          <button
+          <Node
             key={node}
             type="button"
-            className={`keypad-node${activeNode === node ? ' keypad-node--active' : ''}`}
+            $active={activeNode === node}
             onClick={() => handleNodeClick(node)}
             disabled={phase === 'playback'}
             aria-label={`Symbole ${node + 1}`}
           >
             <Icon size={24} />
-          </button>
+          </Node>
         ))}
-      </div>
+      </Grid>
     </ScreenShell>
   )
 }
