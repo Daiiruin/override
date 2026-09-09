@@ -7,9 +7,11 @@ import {
   DEFENSE_CLEARED_SIGNAL,
 } from '../game/levels'
 import { LevelId } from '../game/types'
-import { ScreenShell } from '../components/ScreenShell'
+import { ScreenShell, Divider } from '../components/ScreenShell'
+import { Button } from '../design-system/atoms/Button'
+import { Input } from '../design-system/atoms/Input'
 import { useCountdown } from '../hooks/useCountdown'
-import './DefenseScreen.css'
+import { Field, FallingWord, Progress, Countdown, Form } from './DefenseScreen.styles'
 
 const READY_SECONDS = 5
 const TICK_MS = 60
@@ -17,7 +19,7 @@ const FALL_DURATION_MS = 5000
 const FALL_STEP = 100 / (FALL_DURATION_MS / TICK_MS)
 const SPAWN_EVERY_TICKS = Math.round(1400 / TICK_MS)
 
-interface FallingWord {
+interface FallingWordState {
   id: number
   text: string
   y: number
@@ -30,7 +32,7 @@ export function DefenseScreen() {
   const { state, solveLevel, forceDefeat, penalize } = useGame()
   const level = getLevel(LevelId.Defense)
   const countdown = useCountdown(READY_SECONDS)
-  const [words, setWords] = useState<FallingWord[]>([])
+  const [words, setWords] = useState<FallingWordState[]>([])
   const [cleared, setCleared] = useState(0)
   const [input, setInput] = useState('')
   const tickCount = useRef(0)
@@ -80,33 +82,30 @@ export function DefenseScreen() {
   return (
     <ScreenShell title={level.title}>
       <p>{level.narrative(state)}</p>
+      <Divider />
       {countdown > 0 ? (
-        <p className="level-countdown">{countdown}</p>
+        <Countdown>{countdown}</Countdown>
       ) : (
         <>
-          <p className="defense-progress">
+          <Progress>
             {cleared} / {DEFENSE_WORDS_TO_CLEAR} commandes neutralisées
-          </p>
-          <div className="defense-field">
+          </Progress>
+          <Field>
             {words.map((word) => (
-              <span
-                key={word.id}
-                className="defense-field__word"
-                style={{ top: `${word.y}%`, left: `${word.x}%` }}
-              >
+              <FallingWord key={word.id} style={{ top: `${word.y}%`, left: `${word.x}%` }}>
                 {word.text}
-              </span>
+              </FallingWord>
             ))}
-          </div>
-          <form onSubmit={handleSubmit}>
-            <input
+          </Field>
+          <Form onSubmit={handleSubmit}>
+            <Input
               value={input}
               placeholder="Tape la commande affichée"
               onChange={(event) => setInput(event.target.value)}
               autoFocus
             />
-            <button type="submit">Valider</button>
-          </form>
+            <Button type="submit">Valider</Button>
+          </Form>
         </>
       )}
     </ScreenShell>
