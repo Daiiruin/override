@@ -1,5 +1,5 @@
 import { caesarShift } from '../game/cipher'
-import './CipherDecoderTable.css'
+import { Grid, Pair, Received, Real } from './CipherDecoderTable.styles'
 
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
 
@@ -9,13 +9,13 @@ interface CipherDecoderTableProps {
 
 export function CipherDecoderTable({ shift }: CipherDecoderTableProps) {
   return (
-    <div className="cipher-decoder">
+    <Grid>
       {ALPHABET.map((letter) => (
-        <div key={letter} className="cipher-decoder__pair">
-          <span className="cipher-decoder__received">{letter}</span>
-          <span className="cipher-decoder__real">{caesarShift(letter, -shift)}</span>
-        </div>
+        <Pair key={letter}>
+          <Received>{letter}</Received>
+          <Real>{caesarShift(letter, -shift)}</Real>
+        </Pair>
       ))}
-    </div>
+    </Grid>
   )
 }

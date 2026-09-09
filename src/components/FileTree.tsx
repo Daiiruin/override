@@ -1,4 +1,4 @@
-import './FileTree.css'
+import { Node, Children } from './FileTree.styles'
 
 export interface FileNode {
   name: string
@@ -10,20 +10,20 @@ export interface FileNode {
 export function FileTree({ node }: { node: FileNode }) {
   if (node.type === 'file') {
     return (
-      <details className="file-node">
+      <Node>
         <summary>{node.name}</summary>
         <p>{node.content}</p>
-      </details>
+      </Node>
     )
   }
   return (
-    <details className="folder-node">
+    <Node>
       <summary>{node.name}/</summary>
-      <div className="folder-node__children">
+      <Children>
         {node.children?.map((child) => (
           <FileTree key={child.name} node={child} />
         ))}
-      </div>
-    </details>
+      </Children>
+    </Node>
   )
 }
