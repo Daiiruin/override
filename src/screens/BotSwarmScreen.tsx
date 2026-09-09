@@ -3,9 +3,9 @@ import { Bot, Flame, Cpu } from 'lucide-react'
 import { useGame } from '../game/GameContext'
 import { getLevel, BOTS_TO_CLEAR, BOTS_CLEARED_SIGNAL } from '../game/levels'
 import { LevelId } from '../game/types'
-import { ScreenShell } from '../components/ScreenShell'
+import { ScreenShell, Divider } from '../components/ScreenShell'
 import { useCountdown } from '../hooks/useCountdown'
-import './BotSwarmScreen.css'
+import { Field, PcMarker, BotButton, Progress, Countdown } from './BotSwarmScreen.styles'
 
 const READY_SECONDS = 5
 const TICK_MS = 60
@@ -73,32 +73,33 @@ export function BotSwarmScreen() {
   return (
     <ScreenShell title={level.title}>
       <p>{level.narrative(state)}</p>
+      <Divider />
       {countdown > 0 ? (
-        <p className="level-countdown">{countdown}</p>
+        <Countdown>{countdown}</Countdown>
       ) : (
         <>
-          <p className="assault-progress">
+          <Progress>
             {cleared} / {BOTS_TO_CLEAR} bots détruits
-          </p>
-          <div className="assault-field">
-            <div className="assault-field__pc">
+          </Progress>
+          <Field>
+            <PcMarker>
               <Cpu size={22} />
               <span>VOTRE PC</span>
-            </div>
+            </PcMarker>
             {bots.map((bot) => (
-              <button
+              <BotButton
                 key={bot.id}
                 type="button"
-                className={`assault-bot${bot.exploding ? ' assault-bot--exploding' : ''}`}
+                $exploding={bot.exploding}
                 style={{ top: `${bot.y}%`, left: `${bot.x}%` }}
                 onClick={() => handleDestroy(bot.id)}
                 disabled={bot.exploding}
                 aria-label="Détruire le bot"
               >
                 {bot.exploding ? <Flame size={26} /> : <Bot size={26} />}
-              </button>
+              </BotButton>
             ))}
-          </div>
+          </Field>
         </>
       )}
     </ScreenShell>
