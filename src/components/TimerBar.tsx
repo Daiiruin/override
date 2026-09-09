@@ -1,6 +1,8 @@
 import { useGame } from '../game/GameContext'
 import { formatDuration } from '../game/timer'
-import './TimerBar.css'
+import { getLevel, LEVEL_ORDER } from '../game/levels'
+import { LevelId } from '../game/types'
+import { Bar, AgentSegment, LevelSegment, Countdown } from './TimerBar.styles'
 
 const CRITICAL_THRESHOLD_MS = 60_000
 
@@ -9,15 +11,17 @@ export function TimerBar() {
   if (state.deadlineTimestamp === null || state.currentScreen === 'end') return null
 
   const isCritical = msLeft <= CRITICAL_THRESHOLD_MS
-
-  const classNames = ['timer-bar']
-  if (isPenaltyFlashing) classNames.push('timer-bar--penalty')
-  else if (isCritical) classNames.push('timer-bar--critical')
+  const levelId = state.currentScreen as LevelId
+  const levelIndex = LEVEL_ORDER.indexOf(levelId) + 1
+  const levelTitle = getLevel(levelId).title
 
   return (
-    <div className={classNames.join(' ')}>
-      <span>NEXUS OVERRIDE DANS</span>
-      <span>{formatDuration(msLeft)}</span>
-    </div>
+    <Bar $critical={isCritical} $penalty={isPenaltyFlashing}>
+      <AgentSegment>AGENT: {state.playerName.toUpperCase()}</AgentSegment>
+      <LevelSegment>
+        LVL {String(levelIndex).padStart(2, '0')}/{LEVEL_ORDER.length} — {levelTitle}
+      </LevelSegment>
+      <Countdown>{formatDuration(msLeft)}</Countdown>
+    </Bar>
   )
 }
