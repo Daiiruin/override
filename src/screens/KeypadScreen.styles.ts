@@ -27,6 +27,10 @@ export const Node = styled.button<{ $active: boolean }>(({ theme, $active }) => 
     cursor: 'default',
   },
 
+  '&:hover:not(:disabled)': {
+    borderColor: theme.colors.accent,
+  },
+
   ...($active && {
     background: theme.colors.nexus,
     borderColor: theme.colors.nexus,
